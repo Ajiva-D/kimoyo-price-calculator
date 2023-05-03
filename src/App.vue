@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import NavBar from './components/NavBar.vue'
+import PriceForm from './components/PriceForm.vue';
 </script>
 
 <template>
-  
+  <NavBar/>
 
   <main>
-Hello world
+		<PriceForm/>
   </main>
 </template>
 
