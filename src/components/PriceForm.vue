@@ -8,14 +8,33 @@
     <div class="service-plan">
       <h6>Select a Kimoyo service plan</h6>
       <div class="plans">
-        <div class="plan" v-for="i in 3" :key="i">Plan 0{{ i }}</div>
+        <RadioButton
+          v-for="i in 3"
+          :key="i"
+          :label="`Plan 0${i}`"
+          name="plans_radio"
+          :value="`plan-${i}`"
+          :selectedPlan="selectedPlan"
+          @input="selectedPlan = $event"
+        />
       </div>
     </div>
   </section>
 </template>
 
 <script>
-export default {}
+import RadioButton from './FormElements/RadioButton.vue'
+export default {
+  components: {
+    RadioButton
+  },
+  data: () => ({
+    selectedPlan: ''
+  }),
+  updated() {
+    console.log(this.selectedPlan)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -44,13 +63,6 @@ section {
     .plans {
       display: flex;
       gap: 1rem;
-
-      .plan {
-        padding: 1rem;
-        font-size: 0.875rem;
-        border: 1px solid #bdbdbd;
-        border-radius: 4px;
-      }
     }
   }
 }
