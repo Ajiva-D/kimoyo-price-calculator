@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="price-form">
     <div class="title">
       <h1>Pricing calculator</h1>
       <p>Calculate how much it will cost to conduct a Kimoyo Research Study.</p>
@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style lang="scss">
-section {
+.price-form {
   padding: 2.5rem 7.5rem 5.5rem;
   background-color: #fafafa;
   .title {
