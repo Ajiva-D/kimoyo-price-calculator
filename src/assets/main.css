@@ -3,7 +3,9 @@
 :root {
   --color-text: #333333;
   --primary-color: #0075f2;
+  --light-black: #e0e0e0;
   --light-grey: #bdbdbd;
+  --darker-grey: #828282;
 }
 
 *,
