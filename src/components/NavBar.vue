@@ -17,4 +17,14 @@ nav {
   width: 100%;
   z-index: 10;
 }
+@media screen and (max-width: 768px) {
+  nav {
+    position: static;
+  }
+}
+@media (min-width: 769px) and (max-width: 1439px) {
+  nav {
+    padding: 2rem 3.5rem;
+  }
+}
 </style>

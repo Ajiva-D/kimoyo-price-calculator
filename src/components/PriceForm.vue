@@ -108,6 +108,7 @@ export default {
     }
     .checkbox-con {
       display: flex;
+      flex-wrap: wrap;
       gap: 1rem;
     }
   }
@@ -135,6 +136,25 @@ export default {
     border: none;
     border-radius: 0.25rem;
     margin-top: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .price-form {
+    padding: 1.5rem 1.5rem 3.5rem;
+    .input-grid {
+      grid-template-columns: 1fr;
+    }
+    .countries {
+      border: none;
+      padding: 0rem;
+    }
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1439px) {
+  .price-form {
+    padding: 2.5rem 3.5rem 3.5rem;
   }
 }
 </style>

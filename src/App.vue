@@ -30,9 +30,25 @@ main {
 .summary-con {
   width: 30%;
   height: 100%;
+  min-height: calc(100vh - 5.875rem);
   position: sticky;
   left: 70%;
-  top: 94px;
+  top: 5.875rem;
   background-color: var(--light-purple);
+}
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+    margin-top: 0rem;
+  }
+  .price-con {
+    width: 100%;
+  }
+  .summary-con {
+    width: 100%;
+    position: relative;
+    left: 0;
+    top: 0;
+  }
 }
 </style>

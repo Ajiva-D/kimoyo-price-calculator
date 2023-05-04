@@ -61,4 +61,24 @@ export default {}
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .cost {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .summary {
+    padding: 2rem 1.5rem;
+    p {
+      margin-bottom: 1rem;
+    }
+
+    .summary-list {
+      li {
+        line-height: 1.5rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
 </style>

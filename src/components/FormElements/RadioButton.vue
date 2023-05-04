@@ -91,4 +91,10 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 767px) {
+  .radio-button-con {
+    padding: 0.5rem;
+  }
+}
 </style>
