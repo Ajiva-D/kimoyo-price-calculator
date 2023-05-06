@@ -1,36 +1,40 @@
 <template>
   <div :class="`radio-button-con ${isSelected ? 'activePlan' : ''}`">
-    <input type="radio" :id="label" :name="name" :value="value" @change="$emit('input', value)" />
+    <input type="radio" :id="label" :name="name" :value="value" v-model="model" />
     <label :for="label">{{ label }}</label>
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  props: {
-    label: {
-      type: String,
-      required: true
-    },
-    value: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    selectedPlan: {
-      type: String,
-      required: true
-    }
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = defineProps({
+  label: {
+    type: String,
+    required: true
   },
-  computed: {
-    isSelected() {
-      return this.selectedPlan === this.value
-    }
+  value: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  modelValue: { type: String }
+})
+
+const emit = defineEmits(['update:modelValue'])
+const model = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
   }
-}
+})
+
+const isSelected = computed(() => model.value === props.value)
 </script>
 
 <style lang="scss" scoped>

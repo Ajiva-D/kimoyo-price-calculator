@@ -1,31 +1,40 @@
 <template>
-  <div class="checkbox-con">
-    <input :id="label" type="checkbox" />
-    <label :for="label">{{ label }}</label>
+  <div :class="`checkbox ${isActive ? 'active-checkbox' : ''}`">
+    <input :id="value" type="checkbox" :value="value" v-model="model" />
+    <label :for="value">{{ label }}</label>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    label: {
-      type: String,
-      required: true
-    },
-    value: {
-      type: String,
-      required: true
-    },
-    selectedCountry: {
-      type: String,
-      required: true
-    }
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = defineProps({
+  label: {
+    type: String,
+    required: true
+  },
+  value: {
+    type: String,
+    required: true
+  },
+  modelValue: { type: [Array] }
+})
+
+const emit = defineEmits(['update:modelValue'])
+const model = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
   }
-}
+})
+
+const isActive = computed(() => model.value?.includes(props.value))
 </script>
 
 <style lang="scss" scoped>
-.checkbox-con {
+.checkbox {
   background: #ffffff;
   border: 1px solid var(--darker-grey);
   border-radius: 4px;
@@ -81,5 +90,9 @@ export default {
       width: 0.5rem;
     }
   }
+}
+
+.active-checkbox {
+  border-color: var(--primary-color);
 }
 </style>

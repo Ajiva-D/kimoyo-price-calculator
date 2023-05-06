@@ -1,34 +1,48 @@
 <template>
   <div class="select-group">
     <div class="form-input select" @click="toggleDropdown">
-      <p>— Select study session duration</p>
+      <p>{{ displayValue }}</p>
       <ArrowDown />
     </div>
     <Transition name="slide-up">
       <ul class="dropdown" v-if="showDropdown">
-        <li v-for="i in 3" :key="i" @click="selectItem(`item-${i}`)">30 minutes interview</li>
+        <li v-for="{ id, value, label } in props.dropdown" :key="id" @click="selectItem(value)">
+          {{ label }}
+        </li>
       </ul>
     </Transition>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import ArrowDown from '../Icons/ArrowDown.vue'
+import type { DropdownType } from '@/types'
 
-export default {
-  components: { ArrowDown },
-  data: () => ({
-    showDropdown: false
-  }),
-  methods: {
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown
-    },
-    selectItem(item: string) {
-      this.$emit('select', item)
-      this.showDropdown = false
-    }
-  }
+type PropsType = {
+  placeholder: string
+  dropdown: DropdownType[]
+  modelValue: string
+}
+
+const props = defineProps<PropsType>()
+
+const showDropdown = ref<boolean>(false)
+
+const displayValue = computed<string>(() => {
+  const selectedItem = props.dropdown.find((item) => item.value === props.modelValue)
+  return selectedItem?.label || props.placeholder
+})
+
+const emit = defineEmits(['select', 'update:modelValue'])
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value
+}
+
+const selectItem = (item: string | boolean) => {
+  emit('update:modelValue', item)
+  showDropdown.value = false
 }
 </script>
 

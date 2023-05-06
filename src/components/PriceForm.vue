@@ -15,8 +15,7 @@
             :label="`Plan 0${i}`"
             name="plans_radio"
             :value="`plan-${i}`"
-            :selectedPlan="selectedPlan"
-            @input="selectedPlan = $event"
+            v-model="formData.selectedPlan"
           />
         </div>
       </div>
@@ -24,48 +23,168 @@
       <div class="countries">
         <h6>Countries to recruit participants from</h6>
         <div class="checkbox-con">
-          <CheckBox :label="`Country 0${i}`" :value="`Country_${i}`" v-for="i in 5" :key="i" />
+          <CheckBox
+            :label="`Country 0${i}`"
+            :value="`Country_${i}`"
+            v-model="formData.selectedCountries"
+            v-for="i in 5"
+            :key="i"
+          />
         </div>
       </div>
 
       <div class="input-grid">
-        <InputGroup>
-          <input type="text" name="" id="" class="form-input" />
+        <InputGroup
+          v-for="{ label, placeholder, description, modelKey } in textInputs"
+          :label="label"
+          :description="description"
+          :key="modelKey"
+        >
+          <input
+            type="text"
+            :name="modelKey"
+            :id="modelKey"
+            :placeholder="placeholder"
+            v-model="formData[modelKey]"
+            class="form-input"
+          />
         </InputGroup>
 
-        <InputGroup>
-          <input type="text" name="" id="" class="form-input" />
-        </InputGroup>
-
-        <InputGroup v-for="i in 6" :key="i">
-          <CustomSelect />
+        <InputGroup
+          v-for="{ label, placeholder, description, modelKey, dropdown } in selectInputs"
+          :label="label"
+          :description="description"
+          :key="modelKey"
+        >
+          <CustomSelect
+            v-if="dropdown"
+            :placeholder="placeholder"
+            :dropdown="dropdown"
+            v-model="formData[modelKey]"
+          />
         </InputGroup>
 
         <button>Reset pricing selection</button>
       </div>
+
+      <div class="input-grid"></div>
     </form>
   </section>
 </template>
 
-<script>
+<script setup lang="ts">
 import RadioButton from './FormElements/RadioButton.vue'
 import CheckBox from './FormElements/CheckBox.vue'
 import InputGroup from './FormElements/InputGroup.vue'
 import CustomSelect from './FormElements/CustomSelect.vue'
-export default {
-  components: {
-    RadioButton,
-    CheckBox,
-    InputGroup,
-    CustomSelect
-  },
-  data: () => ({
-    selectedPlan: ''
-  }),
-  updated() {
-    console.log(this.selectedPlan)
-  }
+import { onUpdated, ref } from 'vue'
+import {
+  NeedTranscriptsDropdown,
+  ProjectGuidesDropdown,
+  StudyModerationDropdown,
+  StudyReportDropdown,
+  StudySessionDropdown,
+  StudyStructureDropdown
+} from '@/constants'
+import type { DropdownType } from '@/types'
+
+type formDataType = {
+  selectedPlan: string
+  selectedCountries: string[]
+  participant: string
+  additionalParticipants: string
+  studyDuration: string
+  studyStructure: string
+  studyModeration: string
+  projectGuides: string
+  needTranscripts: string
+  studyReport: string
 }
+const formData = ref<formDataType>({
+  selectedPlan: '',
+  selectedCountries: [],
+  participant: '',
+  additionalParticipants: '',
+  studyDuration: '',
+  studyStructure: '',
+  studyModeration: '',
+  projectGuides: '',
+  needTranscripts: '',
+  studyReport: ''
+})
+
+type InputType = {
+  label: string
+  placeholder: string
+  description: string
+  modelKey: string
+  dropdown?: DropdownType[]
+}
+const textInputs: InputType[] = [
+  {
+    label: 'Number of participants',
+    placeholder: '00',
+    description: 'A minimum of 4 participants is needed for a study',
+    modelKey: 'participant'
+  },
+  {
+    label: 'Number of additional participants',
+    placeholder: '00',
+    description: 'This must be at least 20% of total participants',
+    modelKey: 'additionalParticipants'
+  }
+]
+
+const selectInputs: InputType[] = [
+  {
+    label: 'Duration of each study session',
+    placeholder: '— Select study session duration',
+    description: 'How long will each study session last?',
+    modelKey: 'studyDuration',
+    dropdown: StudySessionDropdown
+  },
+  {
+    label: 'Study structure',
+    placeholder: '— Select study structure',
+    description: 'Will this be an online study or physical study?',
+    modelKey: 'studyStructure',
+    dropdown: StudyStructureDropdown
+  },
+  {
+    label: 'Study moderation',
+    placeholder: '— Select study moderation',
+    description: 'Do you need help from Kimoyo moderating this study?',
+    modelKey: 'studyModeration',
+    dropdown: StudyModerationDropdown
+  },
+  {
+    label: 'Project management & discussion guide prep',
+    placeholder: '— Select',
+    description: 'Do you need help from Kimoyo with a discussion prep?',
+    modelKey: 'projectGuides',
+    dropdown: ProjectGuidesDropdown
+  },
+  {
+    label: 'Need transcripts from each session?',
+    placeholder: '— Select',
+    description: 'Do you need help from Kimoyo transcribing each session?',
+    modelKey: 'needTranscripts',
+    dropdown: NeedTranscriptsDropdown
+  },
+  {
+    label: 'Study report & analysis',
+    placeholder: '— Select study report & analysis',
+    description: 'Will you need help analyzing this study findings and insights?',
+    modelKey: 'studyReport',
+    dropdown: StudyReportDropdown
+  }
+]
+
+onUpdated(() => {
+  console.log('updating')
+
+  console.log(formData.value)
+})
 </script>
 
 <style lang="scss">

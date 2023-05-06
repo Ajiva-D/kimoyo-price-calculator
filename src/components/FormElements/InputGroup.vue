@@ -1,13 +1,22 @@
 <template>
   <div class="input-group">
-    <label for="">Number of participants</label>
+    <label for="">{{ label }}</label>
     <slot></slot>
-    <p>A minimum of 4 participants is needed for a study</p>
+    <p>{{ description }}</p>
   </div>
 </template>
 
-<script>
-export default {}
+<script setup lang="ts">
+const props = defineProps({
+  label: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  }
+})
 </script>
 
 <style lang="scss" scoped>
