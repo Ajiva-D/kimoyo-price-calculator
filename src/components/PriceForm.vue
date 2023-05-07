@@ -105,11 +105,11 @@ const formData = ref<formDataType>({
   participant: '',
   additionalParticipants: '',
   studyDuration: '',
-  studyStructure: '',
-  studyModeration: '',
-  projectGuides: '',
-  needTranscripts: '',
-  studyReport: ''
+  studyStructure: null,
+  studyModeration: null,
+  projectGuides: null,
+  needTranscripts: null,
+  studyReport: null
 })
 
 const defaultAdditionalParticipants = computed<number>(() => {
@@ -177,18 +177,26 @@ const resetForm = async () => {
     participant: '',
     additionalParticipants: '',
     studyDuration: '',
-    studyStructure: '',
-    studyModeration: '',
-    projectGuides: '',
-    needTranscripts: '',
-    studyReport: ''
+    studyStructure: null,
+    studyModeration: null,
+    projectGuides: null,
+    needTranscripts: null,
+    studyReport: null
   }
   v$.value.$reset()
 }
 
 onUpdated(() => {
   console.log('updating')
-  console.log(defaultAdditionalParticipants.value)
+  const { selectedPlan } = formData.value
+  if (selectedPlan == 'plan-2') {
+    formData.value.studyStructure = true
+  } else if (selectedPlan == 'plan-3') {
+    formData.value.studyModeration = true
+    formData.value.projectGuides = true
+    formData.value.needTranscripts = true
+    formData.value.studyReport = true
+  }
 })
 </script>
 

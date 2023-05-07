@@ -22,12 +22,12 @@ export const StudyStructureDropdown = [
 	{
 		id: 'onlineStudy',
 		label: 'Online study',
-		value: 'online'
+		value: true
 	},
 	{
 		id: 'face-face-study',
 		label: 'face-to-face study',
-		value: 'face-to-face'
+		value: false
 	},
 ]
 
@@ -35,12 +35,12 @@ export const StudyModerationDropdown = [
 	{
 		id: 'willModerate',
 		label: 'I will moderate the sessions',
-		value: 'I will moderate the sessions'
+		value: false
 	},
 	{
 		id: 'kimoyoModerates',
 		label: 'Kimoyo moderates',
-		value: 'Kimoyo moderates'
+		value: true
 	},
 ]
 
@@ -48,12 +48,12 @@ export const ProjectGuidesDropdown = [
 	{
 		id: 'willPrepare',
 		label: 'I will prepare my discussion guide',
-		value: 'I will prepare my discussion guide'
+		value: false
 	},
 	{
 		id: 'needHelpPreparing',
 		label: 'I need help preparing discussion guide',
-		value: 'I need help preparing discussion guide'
+		value: true
 	},
 ]
 
