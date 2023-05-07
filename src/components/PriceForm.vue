@@ -5,7 +5,7 @@
       <p>Calculate how much it will cost to conduct a Kimoyo Research Study.</p>
     </div>
 
-    <form>
+    <form @submit.prevent="resetForm">
       <div class="service-plan">
         <h6>Select a Kimoyo service plan</h6>
         <div class="plans">
@@ -18,19 +18,27 @@
             v-model="formData.selectedPlan"
           />
         </div>
+        <BadgeAlert
+          badge="📣 A description for a standard Kimoyo service plan and what it entails."
+          v-if="formData.selectedPlan"
+        />
+        <ErrorMessage :validator="v$.selectedPlan" errorLabel="Service plan" />
       </div>
 
-      <div class="countries">
-        <h6>Countries to recruit participants from</h6>
-        <div class="checkbox-con">
-          <CheckBox
-            :label="`Country 0${i}`"
-            :value="`Country_${i}`"
-            v-model="formData.selectedCountries"
-            v-for="i in 5"
-            :key="i"
-          />
+      <div>
+        <div class="countries">
+          <h6>Countries to recruit participants from</h6>
+          <div class="checkbox-con">
+            <CheckBox
+              :label="`Country 0${i}`"
+              :value="`Country_${i}`"
+              v-model="formData.selectedCountries"
+              v-for="i in 5"
+              :key="i"
+            />
+          </div>
         </div>
+        <ErrorMessage :validator="v$.selectedCountries" errorLabel="Country" />
       </div>
 
       <div class="input-grid">
@@ -48,6 +56,9 @@
             v-model="formData[modelKey]"
             class="form-input"
           />
+          <template #error>
+            <ErrorMessage :validator="v$[modelKey]" :errorLabel="label" />
+          </template>
         </InputGroup>
 
         <InputGroup
@@ -62,9 +73,12 @@
             :dropdown="dropdown"
             v-model="formData[modelKey]"
           />
+          <template #error>
+            <ErrorMessage :validator="v$[modelKey]" :errorLabel="label" />
+          </template>
         </InputGroup>
 
-        <button>Reset pricing selection</button>
+        <button type="submit">Reset pricing selection</button>
       </div>
 
       <div class="input-grid"></div>
@@ -77,29 +91,14 @@ import RadioButton from './FormElements/RadioButton.vue'
 import CheckBox from './FormElements/CheckBox.vue'
 import InputGroup from './FormElements/InputGroup.vue'
 import CustomSelect from './FormElements/CustomSelect.vue'
-import { onUpdated, ref } from 'vue'
-import {
-  NeedTranscriptsDropdown,
-  ProjectGuidesDropdown,
-  StudyModerationDropdown,
-  StudyReportDropdown,
-  StudySessionDropdown,
-  StudyStructureDropdown
-} from '@/constants'
-import type { DropdownType } from '@/types'
+import { computed, onUpdated, ref } from 'vue'
+import { textInputs, selectInputs } from '@/constants'
+import type { formDataType } from '@/types'
+import { useVuelidate } from '@vuelidate/core'
+import { required, numeric, minValue, helpers } from '@vuelidate/validators'
+import ErrorMessage from './ErrorMessage.vue'
+import BadgeAlert from './FormElements/BadgeAlert.vue'
 
-type formDataType = {
-  selectedPlan: string
-  selectedCountries: string[]
-  participant: string
-  additionalParticipants: string
-  studyDuration: string
-  studyStructure: string
-  studyModeration: string
-  projectGuides: string
-  needTranscripts: string
-  studyReport: string
-}
 const formData = ref<formDataType>({
   selectedPlan: '',
   selectedCountries: [],
@@ -113,77 +112,83 @@ const formData = ref<formDataType>({
   studyReport: ''
 })
 
-type InputType = {
-  label: string
-  placeholder: string
-  description: string
-  modelKey: string
-  dropdown?: DropdownType[]
-}
-const textInputs: InputType[] = [
-  {
-    label: 'Number of participants',
-    placeholder: '00',
-    description: 'A minimum of 4 participants is needed for a study',
-    modelKey: 'participant'
-  },
-  {
-    label: 'Number of additional participants',
-    placeholder: '00',
-    description: 'This must be at least 20% of total participants',
-    modelKey: 'additionalParticipants'
-  }
-]
+const defaultAdditionalParticipants = computed<number>(() => {
+  return formData.value.participant ? (parseInt(formData.value.participant) * 20) / 100 : 0
+})
 
-const selectInputs: InputType[] = [
-  {
-    label: 'Duration of each study session',
-    placeholder: '— Select study session duration',
-    description: 'How long will each study session last?',
-    modelKey: 'studyDuration',
-    dropdown: StudySessionDropdown
+const minValue20Percent = (min: number) => {
+  return helpers.withMessage(`must be at least ${min} of the total participants`, minValue(min))
+}
+const rules = computed(() => ({
+  selectedPlan: {
+    required,
+    $autoDirty: true
   },
-  {
-    label: 'Study structure',
-    placeholder: '— Select study structure',
-    description: 'Will this be an online study or physical study?',
-    modelKey: 'studyStructure',
-    dropdown: StudyStructureDropdown
+  selectedCountries: {
+    required,
+    $autoDirty: true
   },
-  {
-    label: 'Study moderation',
-    placeholder: '— Select study moderation',
-    description: 'Do you need help from Kimoyo moderating this study?',
-    modelKey: 'studyModeration',
-    dropdown: StudyModerationDropdown
+  participant: {
+    required,
+    $autoDirty: true,
+    numeric,
+    minValue: minValue(4)
   },
-  {
-    label: 'Project management & discussion guide prep',
-    placeholder: '— Select',
-    description: 'Do you need help from Kimoyo with a discussion prep?',
-    modelKey: 'projectGuides',
-    dropdown: ProjectGuidesDropdown
+  additionalParticipants: {
+    required,
+    $autoDirty: true,
+    numeric,
+    minValue: minValue20Percent(defaultAdditionalParticipants.value)
   },
-  {
-    label: 'Need transcripts from each session?',
-    placeholder: '— Select',
-    description: 'Do you need help from Kimoyo transcribing each session?',
-    modelKey: 'needTranscripts',
-    dropdown: NeedTranscriptsDropdown
+  studyDuration: {
+    required,
+    $autoDirty: true
   },
-  {
-    label: 'Study report & analysis',
-    placeholder: '— Select study report & analysis',
-    description: 'Will you need help analyzing this study findings and insights?',
-    modelKey: 'studyReport',
-    dropdown: StudyReportDropdown
+  studyStructure: {
+    required,
+    $autoDirty: true
+  },
+  studyModeration: {
+    required,
+    $autoDirty: true
+  },
+  projectGuides: {
+    required,
+    $autoDirty: true
+  },
+  needTranscripts: {
+    required,
+    $autoDirty: true
+  },
+  studyReport: {
+    required,
+    $autoDirty: true
   }
-]
+}))
+
+const v$ = useVuelidate(rules, formData.value)
+
+const resetForm = async () => {
+  const isFormCorrect = await v$.value.$validate()
+  if (!isFormCorrect) return
+  formData.value = {
+    selectedPlan: '',
+    selectedCountries: [],
+    participant: '',
+    additionalParticipants: '',
+    studyDuration: '',
+    studyStructure: '',
+    studyModeration: '',
+    projectGuides: '',
+    needTranscripts: '',
+    studyReport: ''
+  }
+  v$.value.$reset()
+}
 
 onUpdated(() => {
   console.log('updating')
-
-  console.log(formData.value)
+  console.log(defaultAdditionalParticipants.value)
 })
 </script>
 
@@ -255,6 +260,7 @@ onUpdated(() => {
     border: none;
     border-radius: 0.25rem;
     margin-top: 0.5rem;
+    cursor: pointer;
   }
 }
 

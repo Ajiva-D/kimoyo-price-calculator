@@ -3,6 +3,7 @@
     <label for="">{{ label }}</label>
     <slot></slot>
     <p>{{ description }}</p>
+    <slot name="error"></slot>
   </div>
 </template>
 
