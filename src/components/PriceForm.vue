@@ -225,7 +225,7 @@ watch(
 
 <style lang="scss">
 .price-form {
-  padding: 2.5rem 7.5rem 5.5rem;
+  padding: 2.5rem 7.5rem 5.5rem 7rem;
   background-color: #fafafa;
   .title {
     margin-bottom: 3rem;

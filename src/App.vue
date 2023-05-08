@@ -21,37 +21,42 @@ const formData = ref(null)
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 main {
   display: flex;
   position: relative;
   margin-top: 5rem;
+  $priceWidth: 65%;
+  $summaryWidth: calc(100% - #{$priceWidth});
+
+  .price-con {
+    width: $priceWidth;
+  }
+  .summary-con {
+    width: $summaryWidth;
+    height: 100%;
+    min-height: calc(100vh - 5.875rem);
+    position: sticky;
+    left: $priceWidth;
+    top: 5.875rem;
+    background-color: var(--light-purple);
+  }
 }
-.price-con {
-  width: 70%;
-}
-.summary-con {
-  width: 30%;
-  height: 100%;
-  min-height: calc(100vh - 5.875rem);
-  position: sticky;
-  left: 70%;
-  top: 5.875rem;
-  background-color: var(--light-purple);
-}
+
 @media (max-width: 768px) {
   main {
     flex-direction: column;
     margin-top: 0rem;
-  }
-  .price-con {
-    width: 100%;
-  }
-  .summary-con {
-    width: 100%;
-    position: relative;
-    left: 0;
-    top: 0;
+
+    .price-con {
+      width: 100%;
+    }
+    .summary-con {
+      width: 100%;
+      position: relative;
+      left: 0;
+      top: 0;
+    }
   }
 }
 </style>

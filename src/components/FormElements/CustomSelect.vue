@@ -2,7 +2,7 @@
   <div class="select-group">
     <div class="form-input select" @click="toggleDropdown" data-test="dropdown-con">
       <p>{{ displayValue }}</p>
-      <ArrowDown />
+      <ArrowDown :class="`transition ${showDropdown ? 'rotate' : ''}`" />
     </div>
     <Transition name="slide-up">
       <ul class="dropdown" v-if="showDropdown">
@@ -110,5 +110,12 @@ const selectItem = (item: string | boolean) => {
       color: #fff;
     }
   }
+}
+
+.rotate {
+  transform: rotate(-180deg);
+}
+.transition {
+  transition: all 0.5s ease-in-out;
 }
 </style>
