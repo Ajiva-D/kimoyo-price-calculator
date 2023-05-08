@@ -108,4 +108,24 @@ const isSelected = computed(() => model.value === props.value)
     padding: 0.5rem;
   }
 }
+@media screen and (max-width: 320px) {
+  .radio-button-con {
+    $radio-size: 1rem;
+    $radio-spacing: calc($radio-size + 0.625rem);
+    font-size: 10px;
+    label {
+      margin-left: $radio-spacing;
+      &::before {
+        width: $radio-size;
+        height: $radio-size;
+        left: -$radio-spacing;
+      }
+      &::after {
+        width: $radio-size;
+        height: $radio-size;
+        left: -$radio-spacing;
+      }
+    }
+  }
+}
 </style>

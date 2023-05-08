@@ -20,11 +20,12 @@ nav {
 @media screen and (max-width: 768px) {
   nav {
     position: static;
+    padding: 2rem 1.5rem;
   }
 }
 @media (min-width: 769px) and (max-width: 1439px) {
   nav {
-    padding: 2rem 3.5rem;
+    padding: 2rem;
   }
 }
 </style>

@@ -304,13 +304,14 @@ watch(
     .countries {
       border: none;
       padding: 0rem;
+      background: none;
     }
   }
 }
 
 @media (min-width: 769px) and (max-width: 1439px) {
   .price-form {
-    padding: 2.5rem 3.5rem 3.5rem;
+    padding: 2.5rem 2rem 3.5rem;
   }
 }
 </style>
