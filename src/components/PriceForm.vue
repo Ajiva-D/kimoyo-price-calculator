@@ -5,7 +5,7 @@
       <p>Calculate how much it will cost to conduct a Kimoyo Research Study.</p>
     </div>
 
-    <form @submit.prevent="resetForm">
+    <form @submit.prevent="resetForm" data-test="form">
       <div class="service-plan">
         <h6>Select a Kimoyo service plan</h6>
         <div class="plans">
@@ -21,6 +21,7 @@
         <BadgeAlert
           badge="📣 A description for a standard Kimoyo service plan and what it entails."
           v-if="formData.selectedPlan"
+          data-test="badge-alert"
         />
         <ErrorMessage :validator="v$.selectedPlan" errorLabel="Service plan" />
       </div>
@@ -114,14 +115,13 @@ const formData = ref<formDataType>({
 
 // this calculates the additional participants based on the number of participants
 const defaultAdditionalParticipants = computed<number>(() => {
-  return formData.value.participant
-    ? Math.round((parseInt(formData.value.participant) * 20) / 100)
-    : 0
+  const participantToNumber = parseInt(formData.value.participant)
+  return participantToNumber ? Math.round((participantToNumber * 20) / 100) : 0
 })
-
-// custom validator for the additional participants field to get the minimum value
-const minValue20Percent = (min: number) => {
-  return helpers.withMessage(`must be at least ${min} of the total participants`, minValue(min))
+// `must be at least ${min} of the total participants`
+// custom validator for the participants & additional participants field to get the minimum value with custom message
+const customMinValue = (min: number, message: string) => {
+  return helpers.withMessage(message, minValue(min))
 }
 
 // form validation rules
@@ -138,13 +138,16 @@ const rules = computed(() => ({
     required,
     $autoDirty: true,
     numeric,
-    minValue: minValue(4)
+    minValue: customMinValue(4, 'should not be less than 4')
   },
   additionalParticipants: {
     required,
     $autoDirty: true,
     numeric,
-    minValue: minValue20Percent(defaultAdditionalParticipants.value)
+    minValue: customMinValue(
+      defaultAdditionalParticipants.value,
+      `must be at least 20% of the total participants`
+    )
   },
   studyDuration: {
     required,

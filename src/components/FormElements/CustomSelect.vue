@@ -1,12 +1,17 @@
 <template>
   <div class="select-group">
-    <div class="form-input select" @click="toggleDropdown">
+    <div class="form-input select" @click="toggleDropdown" data-test="dropdown-con">
       <p>{{ displayValue }}</p>
       <ArrowDown />
     </div>
     <Transition name="slide-up">
       <ul class="dropdown" v-if="showDropdown">
-        <li v-for="{ id, value, label } in props.dropdown" :key="id" @click="selectItem(value)">
+        <li
+          v-for="{ id, value, label } in props.dropdown"
+          :key="id"
+          @click="selectItem(value)"
+          :data-test="`test-${id}`"
+        >
           {{ label }}
         </li>
       </ul>

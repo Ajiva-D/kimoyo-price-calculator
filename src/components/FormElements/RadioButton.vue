@@ -1,6 +1,13 @@
 <template>
   <div :class="`radio-button-con ${isSelected ? 'activePlan' : ''}`">
-    <input type="radio" :id="label" :name="name" :value="value" v-model="model" />
+    <input
+      type="radio"
+      :id="label"
+      :name="name"
+      :value="value"
+      v-model="model"
+      data-test="custom-radio"
+    />
     <label :for="label">{{ label }}</label>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div :class="`checkbox ${isActive ? 'active-checkbox' : ''}`">
-    <input :id="value" type="checkbox" :value="value" v-model="model" />
+    <input :id="value" type="checkbox" :value="value" v-model="model" data-test="custom-checkbox" />
     <label :for="value">{{ label }}</label>
   </div>
 </template>
