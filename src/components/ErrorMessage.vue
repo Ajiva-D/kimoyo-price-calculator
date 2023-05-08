@@ -14,7 +14,7 @@ type PropsType = {
   errorLabel: string
 }
 
-const props = defineProps<PropsType>()
+defineProps<PropsType>()
 </script>
 
 <style scoped>
