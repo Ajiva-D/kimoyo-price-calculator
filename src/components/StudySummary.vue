@@ -28,17 +28,17 @@
         <li v-if="formData?.studyStructure">
           {{ formData.studyStructure }}
         </li>
-        <li v-if="formData?.studyModeration">
+        <li v-if="formData?.studyModeration != null">
           {{ formData.studyModeration ? 'Kimoyo moderates' : 'I will moderate' }}
         </li>
-        <li v-if="formData?.projectGuides">
+        <li v-if="formData?.projectGuides != null">
           Project management & discussion guide preparation
           {{ formData.projectGuides ? 'needed' : 'not needed' }}
         </li>
-        <li v-if="formData?.needTranscripts">
+        <li v-if="formData?.needTranscripts != null">
           {{ formData.needTranscripts ? 'Transcripts needed ' : 'No transcripts needed' }}
         </li>
-        <li v-if="formData?.studyReport">
+        <li v-if="formData?.studyReport != null">
           {{
             formData.studyReport
               ? 'Need study report and analysis '
