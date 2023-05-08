@@ -14,7 +14,7 @@
             :key="i"
             :label="`Plan 0${i}`"
             name="plans_radio"
-            :value="`plan-${i}`"
+            :value="`Plan 0${i}`"
             v-model="formData.selectedPlan"
           />
         </div>
@@ -31,7 +31,7 @@
           <div class="checkbox-con">
             <CheckBox
               :label="`Country 0${i}`"
-              :value="`Country_${i}`"
+              :value="`Country 0${i}`"
               v-model="formData.selectedCountries"
               v-for="i in 5"
               :key="i"
@@ -91,8 +91,8 @@ import RadioButton from './FormElements/RadioButton.vue'
 import CheckBox from './FormElements/CheckBox.vue'
 import InputGroup from './FormElements/InputGroup.vue'
 import CustomSelect from './FormElements/CustomSelect.vue'
-import { computed, onUpdated, ref } from 'vue'
-import { textInputs, selectInputs } from '@/constants'
+import { computed, onUpdated, ref, watch } from 'vue'
+import { textInputs, selectInputs, StudyStructureDropdown } from '@/constants'
 import type { formDataType } from '@/types'
 import { useVuelidate } from '@vuelidate/core'
 import { required, numeric, minValue, helpers } from '@vuelidate/validators'
@@ -105,20 +105,26 @@ const formData = ref<formDataType>({
   participant: '',
   additionalParticipants: '',
   studyDuration: '',
-  studyStructure: null,
+  studyStructure: '',
   studyModeration: null,
   projectGuides: null,
   needTranscripts: null,
   studyReport: null
 })
 
+// this calculates the additional participants based on the number of participants
 const defaultAdditionalParticipants = computed<number>(() => {
-  return formData.value.participant ? (parseInt(formData.value.participant) * 20) / 100 : 0
+  return formData.value.participant
+    ? Math.round((parseInt(formData.value.participant) * 20) / 100)
+    : 0
 })
 
+// custom validator for the additional participants field to get the minimum value
 const minValue20Percent = (min: number) => {
   return helpers.withMessage(`must be at least ${min} of the total participants`, minValue(min))
 }
+
+// form validation rules
 const rules = computed(() => ({
   selectedPlan: {
     required,
@@ -177,7 +183,7 @@ const resetForm = async () => {
     participant: '',
     additionalParticipants: '',
     studyDuration: '',
-    studyStructure: null,
+    studyStructure: '',
     studyModeration: null,
     projectGuides: null,
     needTranscripts: null,
@@ -186,18 +192,32 @@ const resetForm = async () => {
   v$.value.$reset()
 }
 
+const emit = defineEmits(['updatedForm'])
+
 onUpdated(() => {
-  console.log('updating')
-  const { selectedPlan } = formData.value
-  if (selectedPlan == 'plan-2') {
-    formData.value.studyStructure = true
-  } else if (selectedPlan == 'plan-3') {
-    formData.value.studyModeration = true
-    formData.value.projectGuides = true
-    formData.value.needTranscripts = true
-    formData.value.studyReport = true
-  }
+  emit('updatedForm', formData.value)
 })
+
+watch(
+  () => formData.value.participant,
+  () => {
+    formData.value.additionalParticipants = defaultAdditionalParticipants.value.toString()
+  }
+)
+
+watch(
+  () => formData.value.selectedPlan,
+  (selectedPlan) => {
+    if (selectedPlan == 'Plan 02') {
+      formData.value.studyStructure = StudyStructureDropdown[0].value
+    } else if (selectedPlan == 'Plan 03') {
+      formData.value.studyModeration = true
+      formData.value.projectGuides = true
+      formData.value.needTranscripts = true
+      formData.value.studyReport = true
+    }
+  }
+)
 </script>
 
 <style lang="scss">

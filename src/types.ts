@@ -10,7 +10,7 @@ export type formDataType = {
 	participant: string
 	additionalParticipants: string
 	studyDuration: string
-	studyStructure: boolean | null
+	studyStructure: string
 	studyModeration: boolean | null
 	projectGuides: boolean | null
 	needTranscripts: boolean | null

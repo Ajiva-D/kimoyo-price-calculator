@@ -22,7 +22,7 @@ import type { DropdownType } from '@/types'
 type PropsType = {
   placeholder: string
   dropdown: DropdownType[]
-  modelValue: string
+  modelValue: string | boolean | null
 }
 
 const props = defineProps<PropsType>()

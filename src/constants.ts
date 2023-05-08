@@ -4,17 +4,17 @@ export const StudySessionDropdown = [
 	{
 		id: '30mins',
 		label: '30 minutes interview',
-		value: '30'
+		value: '30 minutes study session'
 	},
 	{
 		id: '60mins',
 		label: '60 minutes interview',
-		value: '60'
+		value: '30 minutes study session'
 	},
 	{
 		id: '90mins',
 		label: '90 minutes interview',
-		value: '90'
+		value: '30 minutes study session'
 	}
 ]
 
@@ -22,12 +22,12 @@ export const StudyStructureDropdown = [
 	{
 		id: 'onlineStudy',
 		label: 'Online study',
-		value: true
+		value: 'Online study'
 	},
 	{
 		id: 'face-face-study',
 		label: 'face-to-face study',
-		value: false
+		value: 'face-to-face study'
 	},
 ]
 

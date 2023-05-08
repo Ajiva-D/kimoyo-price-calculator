@@ -2,6 +2,9 @@
 import NavBar from './components/NavBar.vue'
 import PriceForm from './components/PriceForm.vue'
 import StudySummary from './components/StudySummary.vue'
+import { ref } from 'vue'
+
+const formData = ref(null)
 </script>
 
 <template>
@@ -9,11 +12,11 @@ import StudySummary from './components/StudySummary.vue'
 
   <main>
     <section class="price-con">
-      <PriceForm />
+      <PriceForm @updated-form="formData = $event" />
     </section>
 
     <section class="summary-con">
-      <StudySummary />
+      <StudySummary :formData="formData" />
     </section>
   </main>
 </template>
