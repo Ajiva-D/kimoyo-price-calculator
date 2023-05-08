@@ -1,6 +1,6 @@
 <template>
   <div class="select-group">
-    <div class="form-input select" @click="toggleDropdown" data-test="dropdown-con">
+    <div class="form-input select" @click="toggleDropdown" data-test="dropdown-con" role="button">
       <p>{{ displayValue }}</p>
       <ArrowDown :class="`transition ${showDropdown ? 'rotate' : ''}`" />
     </div>

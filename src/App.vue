@@ -26,7 +26,7 @@ main {
   display: flex;
   position: relative;
   margin-top: 5rem;
-  $priceWidth: 65%;
+  $priceWidth: 70%;
   $summaryWidth: calc(100% - #{$priceWidth});
 
   .price-con {

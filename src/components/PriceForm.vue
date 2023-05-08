@@ -8,7 +8,8 @@
     <form @submit.prevent="resetForm" data-test="form">
       <div class="service-plan">
         <h6>Select a Kimoyo service plan</h6>
-        <div class="plans">
+        <fieldset class="plans">
+          <legend>Kimoyo service plan</legend>
           <RadioButton
             v-for="i in 3"
             :key="i"
@@ -17,7 +18,7 @@
             :value="`Plan 0${i}`"
             v-model="formData.selectedPlan"
           />
-        </div>
+        </fieldset>
         <BadgeAlert
           badge="📣 A description for a standard Kimoyo service plan and what it entails."
           v-if="formData.selectedPlan"
@@ -29,7 +30,8 @@
       <div>
         <div class="countries">
           <h6>Countries to recruit participants from</h6>
-          <div class="checkbox-con">
+          <fieldset class="checkbox-con">
+            <legend>Select countries</legend>
             <CheckBox
               :label="`Country 0${i}`"
               :value="`Country 0${i}`"
@@ -37,7 +39,7 @@
               v-for="i in 5"
               :key="i"
             />
-          </div>
+          </fieldset>
         </div>
         <ErrorMessage :validator="v$.selectedCountries" errorLabel="Country" />
       </div>
@@ -306,6 +308,16 @@ watch(
       padding: 0rem;
       background: none;
     }
+  }
+}
+
+/* Hide fieldset for UI but keep for accessibility */
+fieldset {
+  border: none;
+  padding: 0;
+  legend {
+    opacity: 0;
+    position: absolute;
   }
 }
 
